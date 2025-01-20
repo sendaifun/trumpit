@@ -1,6 +1,7 @@
 import { PublicKey } from "@solana/web3.js";
 import { z } from "zod";
 import { trade } from "../../tools/jupiter";
+import { UserWallet } from "../../../types";
 
 const tradeAction = {
   name: "TRADE",
@@ -58,10 +59,10 @@ const tradeAction = {
     inputMint: z.string().min(32, "Invalid input mint address").optional(),
     slippageBps: z.number().min(0).max(10000).optional(),
   }),
-  handler: async (input: Record<string, any>) => {
+  handler: async (user_wallet: UserWallet, input: Record<string, any>) => {
     const tx = await trade(
-      input.user_id,
-      new PublicKey(input.wallet_address),
+      user_wallet.user_id,
+      new PublicKey(user_wallet.wallet_address),
       new PublicKey(input.outputMint),
       input.inputAmount,
       input.inputMint

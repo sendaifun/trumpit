@@ -97,6 +97,7 @@ export async function trade(
     const bundle = await sendJitoBundle([signedTransaction as VersionedTransaction]);
     return bundle.result
   } catch (error: any) {
+    console.log(error);
     throw new Error(`Swap failed: ${error.message}`);
   }
 }

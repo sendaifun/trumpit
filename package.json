@@ -23,6 +23,7 @@
     "ai": "^4.1.0",
     "express": "^4.21.2",
     "node-telegram-bot-api": "^0.66.0",
+    "redis": "^4.7.0",
     "solana-agent-kit": "^1.4.2",
     "zod": "^3.24.1"
   },

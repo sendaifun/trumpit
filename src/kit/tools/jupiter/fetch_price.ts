@@ -23,6 +23,7 @@ export async function fetchPrice(tokenId: PublicKey): Promise<string> {
 
     return price;
   } catch (error: any) {
+    console.log(error);
     throw new Error(`Price fetch failed: ${error.message}`);
   }
 }

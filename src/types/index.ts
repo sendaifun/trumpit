@@ -1,3 +1,4 @@
+import { PublicKey } from "@solana/web3.js";
 import { SolanaAgentKit } from "solana-agent-kit";
 import { z } from "zod";
 
@@ -14,7 +15,7 @@ export interface ActionExample {
  * Handler function type for executing the action
  */
 export type Handler = (
-  agent: SolanaAgentKit,
+  agent: UserWallet,
   input: Record<string, any>,
 ) => Promise<Record<string, any>>;
 
@@ -54,3 +55,9 @@ export interface Action {
    */
   handler: Handler;
 }
+
+export type UserWallet = {
+    user_id: string;
+    wallet_address: PublicKey;
+}
+
