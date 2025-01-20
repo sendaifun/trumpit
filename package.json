@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@ai-sdk/openai": "^1.1.0",
+    "@prisma/client": "^6.2.1",
     "@privy-io/server-auth": "^1.18.1",
     "@solana/spl-token": "^0.4.9",
     "@types/express": "^5.0.0",

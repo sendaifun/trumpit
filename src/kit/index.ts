@@ -1,4 +1,7 @@
-import { SolanaAgentKit, executeAction, ACTIONS } from "solana-agent-kit"
+import { SolanaAgentKit, executeAction } from "solana-agent-kit"
+import fetchPriceAction from "./acitons/jupiter/fetchPrice";
+import tradeAction from "./acitons/jupiter/trade";
+import getInfoAction from "./acitons/perplexity";
 import { perplexityTool } from "../llm/perplexity";
 import { tool, type CoreTool } from "ai";
 
@@ -14,10 +17,9 @@ export function createSolanaTools(
 ): Record<string, CoreTool> {
     const tools: Record<string, CoreTool> = {};
     const needed_actions = [
-        ACTIONS.TRADE_ACTION,
-        ACTIONS.BALANCE_ACTION,
-        ACTIONS.WALLET_ADDRESS_ACTION,
-        ACTIONS.TOKEN_BALANCES_ACTION,
+        fetchPriceAction,
+        tradeAction,
+        getInfoAction,
     ];
 
     for (const action of needed_actions) {

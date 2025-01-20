@@ -7,8 +7,10 @@ import {
   connection,
 } from "../../constants";
 import { getMint } from "@solana/spl-token";
+import { signTransaction } from "../../../client/wallet";
 /**
  * Swap tokens using Jupiter Exchange
+ * @param user_id User ID
  * @param wallet_address Wallet address
  * @param outputMint Target token mint address
  * @param inputAmount Amount to swap (in token decimals)
@@ -18,12 +20,11 @@ import { getMint } from "@solana/spl-token";
  */
 
 export async function trade(
+  user_id: string,
   wallet_address: PublicKey,
   outputMint: PublicKey,
   inputAmount: number,
-  inputMint: PublicKey = TOKENS.USDC,
-  // @deprecated use dynamicSlippage instead
-  slippageBps: number = DEFAULT_OPTIONS.SLIPPAGE_BPS,
+  inputMint: PublicKey = TOKENS.USDC
 ): Promise<string> {
   try {
     // Check if input token is native SOL
@@ -84,7 +85,7 @@ export async function trade(
               priorityLevel: "veryHigh",
             },
           },
-          feeAccount: feeAccount ? feeAccount.toString() : null,
+          // feeAccount: feeAccount ? feeAccount.toString() : null,
         }),
       })
     ).json();
@@ -92,11 +93,12 @@ export async function trade(
     const swapTransactionBuf = Buffer.from(swapTransaction, "base64");
 
     const transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+    const signature = await signTransaction(user_id, transaction);
     // Sign and send transaction
     // transaction.sign([agent.wallet]);
     // const signature = await agent.connection.sendTransaction(transaction);
 
-    return signature;
+    return "signature";
   } catch (error: any) {
     throw new Error(`Swap failed: ${error.message}`);
   }

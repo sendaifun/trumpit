@@ -1,6 +1,6 @@
 import { PublicKey, Connection } from "@solana/web3.js";
 
-export const connection = new Connection(process.env.SOLANA_RPC_URL!);
+export const connection = new Connection(process.env.RPC_URL!);
 
 /**
  * Common token addresses used across the toolkit

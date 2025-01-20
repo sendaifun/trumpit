@@ -11,6 +11,9 @@ importers:
       '@ai-sdk/openai':
         specifier: ^1.1.0
         version: 1.1.0(zod@3.24.1)
+      '@prisma/client':
+        specifier: ^6.2.1
+        version: 6.2.1
       '@privy-io/server-auth':
         specifier: ^1.18.1
         version: 1.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -874,6 +877,15 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
+
+  '@prisma/client@6.2.1':
+    resolution: {integrity: sha512-msKY2iRLISN8t5X0Tj7hU0UWet1u0KuxSPHWuf3IRkB4J95mCvGpyQBfQ6ufcmvKNOMQSq90O2iUmJEN2e5fiA==}
+    engines: {node: '>=18.18'}
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
 
   '@privy-io/server-auth@1.18.1':
     resolution: {integrity: sha512-XTst8VElbIcLzIU8AOZiDEs5sXdC/FjOVEpfOzVo9qBXnXu3hWsftMj3Wjgubajqbuc05i74N/ZgG1Wja96ong==}
@@ -5953,6 +5965,8 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
+
+  '@prisma/client@6.2.1': {}
 
   '@privy-io/server-auth@1.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
