@@ -3,11 +3,11 @@ import {
   TOKENS,
   DEFAULT_OPTIONS,
   JUP_API,
-  JUP_REFERRAL_ADDRESS,
   connection,
 } from "../../constants";
 import { getMint } from "@solana/spl-token";
 import { signTransaction } from "../../../client/wallet";
+import { sendJitoBundle } from "../../../client/jito";
 /**
  * Swap tokens using Jupiter Exchange
  * @param user_id User ID
@@ -93,12 +93,9 @@ export async function trade(
     const swapTransactionBuf = Buffer.from(swapTransaction, "base64");
 
     const transaction = VersionedTransaction.deserialize(swapTransactionBuf);
-    const signature = await signTransaction(user_id, transaction);
-    // Sign and send transaction
-    // transaction.sign([agent.wallet]);
-    // const signature = await agent.connection.sendTransaction(transaction);
-
-    return "signature";
+    const signedTransaction = await signTransaction(user_id, transaction);
+    const bundle = await sendJitoBundle([signedTransaction as VersionedTransaction]);
+    return bundle.result
   } catch (error: any) {
     throw new Error(`Swap failed: ${error.message}`);
   }
