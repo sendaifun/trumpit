@@ -2,7 +2,6 @@ import { SolanaAgentKit, executeAction } from "solana-agent-kit"
 import fetchPriceAction from "./acitons/jupiter/fetchPrice";
 import tradeAction from "./acitons/jupiter/trade";
 import getInfoAction from "./acitons/perplexity";
-import { perplexityTool } from "../llm/perplexity";
 import { tool, type CoreTool } from "ai";
 
 const kit = new SolanaAgentKit(
