@@ -35,8 +35,12 @@ export function createSolanaTools(
             )}
       `.slice(0, 1023),
             parameters: action.schema,
-            execute: async (params) =>
-                await executeAction(action, solanaAgentKit, params),
+            execute: async (params) => {
+                if (action.name === "GET_INFO") {
+                    return await getInfoAction.handler(params);
+                }
+                return await executeAction(action, solanaAgentKit, params);
+            },
         });
     }
 

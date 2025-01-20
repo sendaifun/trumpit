@@ -59,7 +59,7 @@ const getInfoAction = {
     } catch (error: any) {
       return {
         status: "error",
-        message: `Failed to fetch price: ${error.message}`,
+        message: `Failed to fetch information: ${error.message}`,
       };
     }
   },
