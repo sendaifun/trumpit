@@ -23,10 +23,8 @@ export const createWallet = async (user_id: string) => {
 
 export const signTransaction = async (user_id: string, transaction: VersionedTransaction) => {
     const wallet = await getWallet(user_id);
-    console.log(wallet);
     const data =  await privy.walletApi.solana.signTransaction({
-        
-        wallet_id: wallet.wallet_id,
+        walletId: wallet.wallet_id,
         transaction
     })
     const signedTransaction = data.signedTransaction;

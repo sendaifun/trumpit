@@ -77,7 +77,7 @@ async function sendJitoBundle(
     }
   );
 
-  return response.json();
+  return await response.json();
 }
 
 /**

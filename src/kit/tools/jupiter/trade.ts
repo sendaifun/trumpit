@@ -79,11 +79,7 @@ export async function trade(
           dynamicComputeUnitLimit: true,
           dynamicSlippage: true,
           prioritizationFeeLamports: {
-            priorityLevelWithMaxLamports: {
-              maxLamports: 10000000,
-              global: false,
-              priorityLevel: "veryHigh",
-            },
+            jitoTipLamports: 5000,
           },
           // feeAccount: feeAccount ? feeAccount.toString() : null,
         }),

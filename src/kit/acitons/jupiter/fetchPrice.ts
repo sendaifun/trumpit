@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { PublicKey } from "@solana/web3.js";
 import { fetchPrice } from "../../tools/jupiter";
-
+import { UserWallet } from "../../../types";
 const fetchPriceAction = {
   name: "FETCH_PRICE",
   similes: [
@@ -33,7 +33,7 @@ const fetchPriceAction = {
       .string()
       .describe("The mint address of the token to fetch the price for"),
   }),
-  handler: async (input: Record<string, any>) => {
+  handler: async (user_wallet: UserWallet, input: Record<string, any>) => {
     try {
       const tokenId = new PublicKey(input.tokenAddress);
       const price = await fetchPrice(tokenId);
@@ -44,6 +44,7 @@ const fetchPriceAction = {
         message: `Current price: $${price} USDC`,
       };
     } catch (error: any) {
+      console.log(error);
       return {
         status: "error",
         message: `Failed to fetch price: ${error.message}`,
