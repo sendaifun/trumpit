@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ai-sdk/deepseek": "^0.1.0",
     "@ai-sdk/openai": "^1.1.0",
     "@prisma/client": "^6.2.1",
     "@privy-io/server-auth": "^1.18.1",

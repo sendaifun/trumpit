@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ai-sdk/deepseek':
+        specifier: ^0.1.0
+        version: 0.1.0(zod@3.24.1)
       '@ai-sdk/openai':
         specifier: ^1.1.0
         version: 1.1.0(zod@3.24.1)
@@ -65,6 +68,18 @@ packages:
 
   '@3land/listings-sdk@0.0.6':
     resolution: {integrity: sha512-1OG4qddbij7kLGcyRvwA9WUiif7DJi2gEWODHF4NnfgQHRl22yLSFHZeHPLlo9mE1T2LZnn0I6HtUxvUtCHCAQ==}
+
+  '@ai-sdk/deepseek@0.1.0':
+    resolution: {integrity: sha512-8ldXbIZOtBPNefL60Frcynr98FOrtI749/ipkAsUWfPUQ2OA4ujuGeu90wnONebkRLlxaveZS5+NFR/p3n6Tyg==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.0.0
+
+  '@ai-sdk/openai-compatible@0.1.0':
+    resolution: {integrity: sha512-sgk8oPdnTwImR77HT+esnjoZ7Uu4V5ptXJY+w06GGRCeM3PMJowAqC7gAdYhD5DBYUo+4Gs+wvKenaPBNV0WVg==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.0.0
 
   '@ai-sdk/openai@1.1.0':
     resolution: {integrity: sha512-D2DaGMK89yYgO32n4Gr7gBJeJGGGS27gdfzYFMRDXlZmKh7VW1WXBp3FXxDwpmt0CgLoVI4qV8lf+gslah+kWw==}
@@ -4924,6 +4939,19 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
+
+  '@ai-sdk/deepseek@0.1.0(zod@3.24.1)':
+    dependencies:
+      '@ai-sdk/openai-compatible': 0.1.0(zod@3.24.1)
+      '@ai-sdk/provider': 1.0.4
+      '@ai-sdk/provider-utils': 2.1.0(zod@3.24.1)
+      zod: 3.24.1
+
+  '@ai-sdk/openai-compatible@0.1.0(zod@3.24.1)':
+    dependencies:
+      '@ai-sdk/provider': 1.0.4
+      '@ai-sdk/provider-utils': 2.1.0(zod@3.24.1)
+      zod: 3.24.1
 
   '@ai-sdk/openai@1.1.0(zod@3.24.1)':
     dependencies:
