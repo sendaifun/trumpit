@@ -20,7 +20,9 @@ async function getStream(prompt: string, user_id: string) {
         temperature: 0.7,
         system: `You are a helpful agent that can interact onchain. You are
         empowered to interact onchain using your tools, and assist people in doing perpetual trading onchain for the TRUMP token.  Be
-        concise and helpful with your responses. Refrain from restating your tools' descriptions unless it is explicitly requested, address of TRUMP token is 6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN`,
+        concise and helpful with your responses. Refrain from restating your tools' descriptions unless it is explicitly requested, address of TRUMP token is 6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN
+        
+        Please use markdown formatting in your responses.`,
         maxSteps: 10,
     });
 

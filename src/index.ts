@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import TelegramBot from 'node-telegram-bot-api';
 import getStream from "./llm/getStream";
-import { PublicKey } from '@solana/web3.js';
+import telegramifyMarkdown from 'telegramify-markdown';
 
 // Replace 'YOUR_BOT_TOKEN' with the token you got from BotFather
 const token = process.env.TELEGRAM_BOT_TOKEN || 'YOUR_BOT_TOKEN';
@@ -34,10 +34,9 @@ bot.on('message', async (msg) => {
   try {
     // Show "typing" status while processing
     bot.sendChatAction(chatId, 'typing');
-    
     const response = await getStream(msg.text || '', msg.from.id.toString());
-    // Escape special characters and send with markdown parsing
-    bot.sendMessage(chatId, escapeMarkdown(response), { parse_mode: 'MarkdownV2' });
+    const formattedResponse = telegramifyMarkdown(response, 'keep');
+    bot.sendMessage(chatId, formattedResponse, { parse_mode: 'MarkdownV2' });
   } catch (error) {
     console.error('Error processing message:', error);
     bot.sendMessage(chatId, 'Sorry, I encountered an error processing your message\\.', { parse_mode: 'MarkdownV2' });

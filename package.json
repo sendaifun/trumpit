@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "build": "tsx src/index.ts",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,6 +25,7 @@
     "node-telegram-bot-api": "^0.66.0",
     "redis": "^4.7.0",
     "solana-agent-kit": "^1.4.2",
+    "telegramify-markdown": "^1.2.2",
     "zod": "^3.24.1"
   },
   "devDependencies": {
