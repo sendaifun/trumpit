@@ -10,11 +10,9 @@ const openai = createOpenAI({
 });
 
 async function getStream(prompt: string, user_id: string) {
-    let user_wallet = await get(user_id);
-    if (!user_wallet) {
-        const wallet = await getWallet(user_id);
-        user_wallet = wallet.wallet_address;
-    }
+
+    const wallet = await getWallet(user_id);
+    let user_wallet = wallet.wallet_address;
     const stream = streamText({
         model: openai("gpt-4o"),
         prompt,
