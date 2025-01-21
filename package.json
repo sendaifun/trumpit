@@ -21,6 +21,7 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.7",
     "ai": "^4.1.0",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "node-telegram-bot-api": "^0.66.0",
     "redis": "^4.7.0",
