@@ -4,6 +4,10 @@ FROM node:20.10.0-alpine
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
+# Install Python, build dependencies, and Linux headers
+RUN apk add --no-cache python3 make g++ linux-headers libusb-dev eudev-dev \
+    && ln -sf python3 /usr/bin/python
+
 # Install pnpm globally
 RUN npm install -g pnpm
 
@@ -13,11 +17,11 @@ COPY package.json pnpm-lock.yaml ./
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Generate the Prisma client
-RUN npx prisma generate
-
 # Copy the rest of the application code
 COPY . .
+
+# Generate the Prisma client
+RUN npx prisma generate
 
 # Build the application
 RUN pnpm build
