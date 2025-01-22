@@ -55,7 +55,7 @@ bot.on('message', async (msg) => {
   try {
     // Show "typing" status while processing
     bot.sendChatAction(chatId, 'typing');
-    const response = await getStream(msg.text || '', msg.from.id.toString());
+    const response = await getStream(msg.text || '', msg?.from?.id?.toString() || '');
     const formattedResponse = telegramifyMarkdown(response, 'keep');
     bot.sendMessage(chatId, formattedResponse, { parse_mode: 'MarkdownV2' });
   } catch (error) {
