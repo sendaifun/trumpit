@@ -3,6 +3,7 @@ import tradeAction from "./acitons/jupiter/trade";
 import getInfoAction from "./acitons/perplexity";
 import getWalletAddressAction from "./acitons/agent/getWalletAddress";
 import balanceAction from "./acitons/agent/balance";
+import transferAction from "./acitons/agent/transfer";
 import { tool, type CoreTool } from "ai";
 import { PublicKey } from "@solana/web3.js";
 import { UserWallet , Action } from "../types";
@@ -53,6 +54,7 @@ export function createSolanaTools(
         getInfoAction,
         getWalletAddressAction,
         balanceAction,
+        transferAction,
     ];
 
     for (const action of needed_actions) {
