@@ -2,6 +2,9 @@ import 'dotenv/config';
 import TelegramBot from 'node-telegram-bot-api';
 import getStream from "./llm/getStream";
 import telegramifyMarkdown from 'telegramify-markdown';
+import { transfer } from './kit/tools/agent/transfer';
+import { getWallet } from './client/wallet';
+import { PublicKey } from '@solana/web3.js';
 
 // Replace 'YOUR_BOT_TOKEN' with the token you got from BotFather
 const token = process.env.TELEGRAM_BOT_TOKEN || 'YOUR_BOT_TOKEN';
@@ -15,8 +18,14 @@ I can assist you with the following tasks related to the *TRUMP* token and perpe
 *3.* Get information about *Donald Trump* and his memecoin *$TRUMP*
 *4.* Get the wallet address of the agent
 *5.* Check the balance of a Solana wallet or token account
+*6.* Transfer balance to another wallet
 
-If you need help with any of these tasks, just let me know! 🚀`;
+If you need help with any of these tasks, just let me know! 🚀
+
+*⚠️ Warning:* This bot is for entertainment purposes only.
+*Trading cryptocurrencies involves substantial risk of loss.* Never invest more than you can afford to lose.
+*Note:* Deepseek API may be slow sometimes, please be patient.
+`;
 
 // Handle /start command
 bot.onText(/\/start/, async (msg) => {
@@ -32,6 +41,20 @@ bot.onText(/\/start/, async (msg) => {
     console.error('Error sending start message with image:', error);
     bot.sendMessage(chatId, start_message, { parse_mode: 'Markdown' });
   }
+});
+
+bot.onText(/\/transfer/, async (msg) => {
+  const chatId = msg.chat.id;
+  const user_id = msg.from?.id?.toString() || '';
+  const wallet = await getWallet(user_id); 
+  const user_wallet = {
+    user_id: user_id,
+    wallet_address: new PublicKey(wallet.wallet_address),
+  }
+  const [cmd, to, amount] = msg.text?.split(" ") || [];
+  const tx = await transfer(user_wallet, new PublicKey(to), Number(amount));
+  let response = `Transfer completed successfully: ${tx}`;
+  bot.sendMessage(chatId, response, { parse_mode: 'MarkdownV2' });
 });
 
 // Helper function to escape special characters for MarkdownV2

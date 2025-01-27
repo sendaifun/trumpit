@@ -4,6 +4,7 @@ import {
   DEFAULT_OPTIONS,
   JUP_API,
   connection,
+  JUP_REFERRAL_ADDRESS,
 } from "../../constants";
 import { getMint } from "@solana/spl-token";
 import { signTransaction } from "../../../client/wallet";
@@ -49,22 +50,22 @@ export async function trade(
         `&onlyDirectRoutes=false` +
         `&maxAccounts=64` +
         `&swapMode=ExactIn` +
-        `${DEFAULT_OPTIONS.RERERRAL_FEE ? `&platformFeeBps=${DEFAULT_OPTIONS.RERERRAL_FEE}` : ""}`,
+        `&platformFeeBps=${DEFAULT_OPTIONS.RERERRAL_FEE}`,
       )
-    ).json();
+      ).json();
 
-    // Get serialized transaction
-    // let feeAccount;
-    // if (JUPITER_REFERRAL_ACCOUNT) {
-    //   [feeAccount] = PublicKey.findProgramAddressSync(
-    //     [
-    //       Buffer.from("referral_ata"),
-    //       new PublicKey(JUPITER_REFERRAL_ACCOUNT).toBuffer(),
-    //       TOKENS.SOL.toBuffer(),
-    //     ],
-    //     new PublicKey(JUP_REFERRAL_ADDRESS),
-    //   );
-    // }
+    console.log(quoteResponse);
+    
+
+    let [feeAccount] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("referral_ata"),
+        new PublicKey("9icb3BSbEY1qF2svGrd2ta3yRTkENBJjYB6sbWG4fZvV").toBuffer(),
+        TOKENS.SOL.toBuffer(),
+      ],
+      new PublicKey(JUP_REFERRAL_ADDRESS),
+    );
+
 
     const { swapTransaction } = await (
       await fetch("https://quote-api.jup.ag/v6/swap", {
@@ -81,7 +82,7 @@ export async function trade(
           prioritizationFeeLamports: {
             jitoTipLamports: 5000,
           },
-          // feeAccount: feeAccount ? feeAccount.toString() : null,
+          feeAccount: feeAccount.toString(),
         }),
       })
     ).json();

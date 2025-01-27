@@ -25,7 +25,7 @@ export const TOKENS = {
 export const DEFAULT_OPTIONS = {
   SLIPPAGE_BPS: 300,
   TOKEN_DECIMALS: 9,
-  RERERRAL_FEE: 200,
+  RERERRAL_FEE: 50,
   LEVERAGE_BPS: 50000, // 10000 = x1, 50000 = x5, 100000 = x10, 1000000 = x100
 } as const;
 

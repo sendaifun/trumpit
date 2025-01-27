@@ -8,7 +8,8 @@ import {
 } from "@solana/spl-token";
 import { connection } from "../../constants";
 import { signTransaction } from "../../../client/wallet";
-import { sendJitoBundle } from "../../../client/jito";
+import { getRandomTipAccount, sendJitoBundle } from "../../../client/jito";
+import { TransactionMessage } from "@solana/web3.js";
 
 /**
  * Transfer SOL or SPL tokens to a recipient
@@ -25,24 +26,31 @@ export async function transfer(
     mint?: PublicKey,
 ): Promise<string> {
     try {
-        let tx: string;
 
         if (!mint) {
-            // Transfer native SOL
-            const transaction = new VersionedTransaction(
-                new Transaction().add(
+
+            const message = new TransactionMessage({
+                payerKey: agent.wallet_address,
+                recentBlockhash: (await connection.getLatestBlockhash()).blockhash,
+                instructions: [
                     SystemProgram.transfer({
                         fromPubkey: agent.wallet_address,
                         toPubkey: to,
                         lamports: amount * LAMPORTS_PER_SOL,
-                    })
-                ).compileMessage()
-            );
+                    }),
+                    SystemProgram.transfer({
+                        fromPubkey: agent.wallet_address,
+                        toPubkey: getRandomTipAccount(),
+                        lamports: amount * LAMPORTS_PER_SOL,
+                    }),
+                ],
+            }).compileToV0Message();
 
-            //   tx = await connection.sendTransaction(transaction, [agent.]);
+            const transaction = new VersionedTransaction(message);
             const signedTransaction = await signTransaction(agent.user_id, transaction);
-            let { result } = await sendJitoBundle([signedTransaction as VersionedTransaction]);
-            return result;
+            let result  = await sendJitoBundle([signedTransaction as VersionedTransaction]);
+            console.log(result);
+            return result.result;
         } else {
             // Transfer SPL token
             const fromAta = await getAssociatedTokenAddress(
@@ -55,22 +63,27 @@ export async function transfer(
             const mintInfo = await getMint(connection, mint);
             const adjustedAmount = amount * Math.pow(10, mintInfo.decimals);
 
-            const transaction = new VersionedTransaction(
-                new Transaction().add(
-                    createTransferInstruction(
-                        fromAta,
-                        toAta,
-                        agent.wallet_address,
-                        adjustedAmount,
-                    ),
-                ).compileMessage()
-            );
+            const message = new TransactionMessage({
+                payerKey: agent.wallet_address,
+                recentBlockhash: (await connection.getLatestBlockhash()).blockhash,
+                instructions: [
+                    createTransferInstruction(fromAta, toAta, agent.wallet_address, adjustedAmount),
+                    SystemProgram.transfer({
+                        fromPubkey: agent.wallet_address,
+                        toPubkey: getRandomTipAccount(),
+                        lamports: amount * LAMPORTS_PER_SOL,
+                    }),
+                ],
+            }).compileToV0Message();
+
+            const transaction = new VersionedTransaction(message);
 
             const signedTransaction = await signTransaction(agent.user_id, transaction);
-            let {result} = await sendJitoBundle([signedTransaction as VersionedTransaction]);
-            return result;
+            let result = await sendJitoBundle([signedTransaction as VersionedTransaction]);
+            return result.result;
         }
     } catch (error: any) {
+        console.log(error);
         throw new Error(`Transfer failed: ${error.message}`);
     }
 }
