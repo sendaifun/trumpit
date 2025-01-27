@@ -6,7 +6,7 @@
 
 </div>
 
-A Telegram bot powered by Solana Agnet Kit for interacting with the TRUMP token on Solana. Make trading great again! 
+A Telegram bot powered by [Solana Agent Kit](https://github.com/sendaifun/solana-agent-kit) for interacting with the TRUMP token on Solana. Make trading great again!
 
 ## Features
 
