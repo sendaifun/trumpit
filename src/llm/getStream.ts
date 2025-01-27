@@ -1,14 +1,8 @@
-import { createOpenAI } from "@ai-sdk/openai";
 import { createDeepSeek } from '@ai-sdk/deepseek';
 import { streamText } from "ai";
 import { getSolanaTools } from "../kit";
 import { PublicKey } from "@solana/web3.js";
-import { get, set } from "../client/redis";
 import { getWallet } from "../client/wallet";
-
-const openai = createOpenAI({
-    apiKey: process.env.OPENAI_API_KEY!,
-});
 
 const deepseek = createDeepSeek({
     apiKey: process.env.DEEPSEEK_API_KEY!,
