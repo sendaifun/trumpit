@@ -8,7 +8,7 @@ import {
 } from "../../constants";
 import { getMint } from "@solana/spl-token";
 import { signTransaction } from "../../../client/wallet";
-import { sendJitoBundle } from "../../../client/jito";
+import { getBundleTransactionLink, sendJitoBundle } from "../../../client/jito";
 /**
  * Swap tokens using Jupiter Exchange
  * @param user_id User ID
@@ -90,9 +90,17 @@ export async function trade(
     const swapTransactionBuf = Buffer.from(swapTransaction, "base64");
 
     const transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+
+    const simulate = await connection.simulateTransaction(transaction);
+    const isError = simulate.value.err != null;
+    if (isError) {
+        throw new Error("Transaction failed: " + simulate.value.err);
+    }
+
     const signedTransaction = await signTransaction(user_id, transaction);
     const bundle = await sendJitoBundle([signedTransaction as VersionedTransaction]);
-    return bundle.result
+    let tx = await getBundleTransactionLink(bundle.result);
+    return tx!;
   } catch (error: any) {
     console.log(error);
     throw new Error(`Swap failed: ${error.message}`);

@@ -65,6 +65,8 @@ async function sendJitoBundle(
     ],
   };
 
+  console.log(bundleRequest);
+
   // Send the bundle to Jito's block engine
   const response = await fetch(
     "https://mainnet.block-engine.jito.wtf:443/api/v1/bundles",
@@ -80,12 +82,42 @@ async function sendJitoBundle(
   return await response.json();
 }
 
+
+/**
+ * Gets the status of one or more Jito bundles
+ * @param bundleIds - Array of bundle IDs to check
+ * @returns Array of bundle statuses (null if bundle not found)
+ */
+async function getInflightBundleStatuses(bundleIds: string[]) {
+  const statusRequest = {
+    jsonrpc: '2.0',
+    id: 1,
+    method: 'getInflightBundleStatuses',
+    params: [bundleIds]
+  };
+
+  const response = await fetch('https://mainnet.block-engine.jito.wtf/api/v1/bundles', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(statusRequest)
+  });
+
+  const body = await response.json();
+
+  console.log("inflight bundle statuses", body.result.value);
+
+  return body;
+}
+
 /**
  * Gets the status of one or more Jito bundles
  * @param bundleIds - Array of bundle IDs to check
  * @returns Array of bundle statuses (null if bundle not found)
  */
 async function getJitoBundleStatus(bundleIds: string[]): Promise<BundleStatusResponse> {
+  await getInflightBundleStatuses(bundleIds)
   const statusRequest = {
     jsonrpc: '2.0',
     id: 1,
@@ -101,7 +133,11 @@ async function getJitoBundleStatus(bundleIds: string[]): Promise<BundleStatusRes
     body: JSON.stringify(statusRequest)
   });
 
-  return response.json();
+  const body = await response.json();
+
+  console.log(body);
+
+  return body;
 }
 
 /**
@@ -111,7 +147,18 @@ async function getJitoBundleStatus(bundleIds: string[]): Promise<BundleStatusRes
  */
 async function getBundleTransactionLink(bundleId: string): Promise<string | null> {
   try {
-    const status = await getJitoBundleStatus([bundleId]);
+    console.log(bundleId);
+    let status: BundleStatusResponse | null = null;
+    while (true) {
+      status = await getJitoBundleStatus([bundleId]);
+      console.log(status);
+      if (status.result !== null) {
+        break;
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+
+    console.log(status);
     
     if (!status.result?.[0]?.transactions) {
       return null;

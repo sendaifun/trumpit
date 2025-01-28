@@ -8,7 +8,7 @@ import {
 } from "@solana/spl-token";
 import { connection } from "../../constants";
 import { signTransaction } from "../../../client/wallet";
-import { getRandomTipAccount, sendJitoBundle } from "../../../client/jito";
+import { getBundleTransactionLink, getRandomTipAccount, sendJitoBundle } from "../../../client/jito";
 import { TransactionMessage } from "@solana/web3.js";
 
 /**
@@ -41,16 +41,23 @@ export async function transfer(
                     SystemProgram.transfer({
                         fromPubkey: agent.wallet_address,
                         toPubkey: getRandomTipAccount(),
-                        lamports: amount * LAMPORTS_PER_SOL,
+                        lamports: 0.0001 * LAMPORTS_PER_SOL,
                     }),
                 ],
             }).compileToV0Message();
 
             const transaction = new VersionedTransaction(message);
+
+            const simulate = await connection.simulateTransaction(transaction);
+            const isError = simulate.value.err != null;
+            if (isError) {
+                throw new Error("Transaction failed: " + simulate.value.err);
+            }
+
             const signedTransaction = await signTransaction(agent.user_id, transaction);
             let result  = await sendJitoBundle([signedTransaction as VersionedTransaction]);
-            console.log(result);
-            return result.result;
+            let tx = await getBundleTransactionLink(result.result);
+            return tx!;
         } else {
             // Transfer SPL token
             const fromAta = await getAssociatedTokenAddress(
@@ -71,16 +78,29 @@ export async function transfer(
                     SystemProgram.transfer({
                         fromPubkey: agent.wallet_address,
                         toPubkey: getRandomTipAccount(),
-                        lamports: amount * LAMPORTS_PER_SOL,
+                        lamports: 0.0001 * LAMPORTS_PER_SOL,
                     }),
                 ],
             }).compileToV0Message();
 
             const transaction = new VersionedTransaction(message);
 
+            const simulate = await connection.simulateTransaction(transaction);
+            const isError = simulate.value.err != null;
+            if (isError) {
+                throw new Error("Transaction failed: " + simulate.value.err);
+            }
+
+
             const signedTransaction = await signTransaction(agent.user_id, transaction);
+
+
+
+  
+
             let result = await sendJitoBundle([signedTransaction as VersionedTransaction]);
-            return result.result;
+            let tx = await getBundleTransactionLink(result.result);
+            return tx!;
         }
     } catch (error: any) {
         console.log(error);

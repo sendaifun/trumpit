@@ -19,6 +19,7 @@ I can assist you with the following tasks related to the *TRUMP* token and perpe
 *4.* Get the wallet address of the agent
 *5.* Check the balance of a Solana wallet or token account
 *6.* Transfer balance to another wallet
+Fallback command: \`/transfer <wallet_address> <amount>\`
 
 If you need help with any of these tasks, just let me know! 🚀
 
