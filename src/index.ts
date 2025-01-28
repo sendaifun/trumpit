@@ -55,7 +55,7 @@ bot.onText(/\/transfer/, async (msg) => {
   const [cmd, to, amount] = msg.text?.split(" ") || [];
   try {
     const tx = await transfer(user_wallet, new PublicKey(to), Number(amount));
-    let response = `Your transfer to ${to} of ${amount} TRUMP is completed successfully ${tx}.  President Trump is proud of you! 🇺🇸`;
+    let response = `Your transfer to ${to} of ${amount} TRUMP is completed successfully ${tx}  President Trump is proud of you! 🇺🇸`;
     bot.sendMessage(chatId, response, { parse_mode: 'MarkdownV2' });
   } catch (error: any) {
     bot.sendMessage(chatId, `${error?.message}`, { parse_mode: 'MarkdownV2' });
