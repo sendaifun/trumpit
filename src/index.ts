@@ -54,7 +54,7 @@ bot.onText(/\/transfer/, async (msg) => {
   }
   const [cmd, to, amount] = msg.text?.split(" ") || [];
   const tx = await transfer(user_wallet, new PublicKey(to), Number(amount));
-  let response = `Transfer completed successfully: ${tx}`;
+  let response = `Your transfer to ${to} of ${amount} TRUMP is completed successfully ${tx}.  President Trump is proud of you! 🇺🇸`;
   bot.sendMessage(chatId, response, { parse_mode: 'MarkdownV2' });
 });
 
