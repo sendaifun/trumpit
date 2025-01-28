@@ -96,14 +96,14 @@ export async function transfer(
 
 
 
-  
 
+            
             let result = await sendJitoBundle([signedTransaction as VersionedTransaction]);
             let tx = await getBundleTransactionLink(result.result);
             return tx!;
         }
     } catch (error: any) {
         console.log(error);
-        throw new Error(`Transfer failed: ${error.message}`);
+        throw new Error(`Transfer failed: Please try again later or contact team if the issue persists`);
     }
 }
